@@ -44,16 +44,40 @@
     </div>
 </section>
 
+<p>
+    작성자:
+    <% if (user) { %>
+        <%= user.username %>
+    <% } else { %>
+        익명
+    <% } %>
+</p>
 
 <main>
     <ul>
         <% posts.forEach(post => { %>
             <li style="margin-left:<%= post.parent_id ? '30px' : '0' %>">
                 <a href="/board/view/<%= post.id %>">
-                    <%= post ? '글 수정': post.parent_id ? '[답글]' : '' %> <%= post.title %> - <%= post.author %>
+                    <%= post.parent_id ? '[답글]' : '' %> <%= post.title %> - <%= post.author %>
                 </a>
-                (<a href="/board/edit/<%= post.id %>">수정</a> /
-                <a href="/board/delete/<%= post.id %>">삭제</a>)
+
+                <% const isAuthor = user && user.username === post.author; %>
+                <% const isAdmin = user && user.username === 'admin'; %>
+                <% const isAnon = post.author === '익명'; %>
+
+                (
+                <% if (isAuthor) { %>
+                    <a href="/board/edit/<%= post.id %>">수정</a>
+                <% } else { %>
+                    <span class="disabled">수정</span>
+                <% } %>
+                /
+                <% if ((isAuthor) || (isAnon && isAdmin)) { %>
+                    <a href="/board/delete/<%= post.id %>" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+                <% } else { %>
+                    <span class="disabled">삭제</span>
+                <% } %>
+                )
             </li>
         <% }) %>
     </ul>

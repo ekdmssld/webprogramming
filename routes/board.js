@@ -23,8 +23,8 @@ const upload = multer({ storage: storage });
 // 게시글 목록
 router.get('/', (req, res) => {
     db.all(`
-        SELECT * FROM posts ORDER BY 
-        COALESCE(parent_id, id), id ASC
+        SELECT * FROM posts ORDER BY
+                                COALESCE(parent_id, id), id ASC
     `, [], (err, posts) => {
         if (err) return res.send('목록 불러오기 실패');
         res.render('board', { title: '고객센터 게시판',posts });
@@ -33,7 +33,11 @@ router.get('/', (req, res) => {
 
 // 글쓰기 폼
 router.get('/new', (req, res) => {
-    res.render('post', {post: null, parentId: null });
+    res.render('post', {
+        post: null,
+        parentId: null,
+        user: req.session.user || null //사용자 정보 전달
+    });
 });
 
 // 글쓰기 처리
@@ -118,7 +122,11 @@ router.get('/reply/:id', (req, res) => {
     const parentId = req.params.id;
     db.get("SELECT title FROM posts WHERE id = ?", [parentId], (err, row) => {
         if (err || !row) return res.send("원글 없음");
-        res.render('reply', { parentId, parentTitle: row.title });
+        res.render('reply',
+            { parentId,
+                parentTitle: row.title,
+                user: req.session.user || null
+            });
     });
 });
 
@@ -160,11 +168,39 @@ router.post('/edit/:id', (req, res) => {
 });
 
 // 삭제
+// router.get('/delete/:id', (req, res) => {
+//     db.run('DELETE FROM posts WHERE id = ?', [req.params.id], (err) => {
+//         if (err) return res.send('삭제 실패');
+//         res.redirect('/board');
+//     });
+// });
+
+// 삭제 처리- 본인이 작성한 글만 삭제 가능
 router.get('/delete/:id', (req, res) => {
-    db.run('DELETE FROM posts WHERE id = ?', [req.params.id], (err) => {
-        if (err) return res.send('삭제 실패');
-        res.redirect('/board');
+    const postId = req.params.id;
+    const currentUser = req.session.user?.username;
+
+    db.get('SELECT * FROM posts WHERE id = ?', [postId], (err, post) => {
+        if (err || !post) return res.send('글이 존재하지 않습니다.');
+
+        // 익명 글이면 admin만 삭제 가능
+        if (post.author === '익명') {
+            if (currentUser !== 'admin') {
+                return res.send('익명 글은 admin만 삭제할 수 있습니다.');
+            }
+        } else {
+            // 본인이 쓴 글만 삭제 가능
+            if (currentUser !== post.author) {
+                return res.send('본인이 작성한 글만 삭제할 수 있습니다.');
+            }
+        }
+
+        db.run('DELETE FROM posts WHERE id = ?', [postId], (delErr) => {
+            if (delErr) return res.send('삭제 실패');
+            res.redirect('/board');
+        });
     });
 });
+
 
 module.exports = router;
