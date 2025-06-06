@@ -1,0 +1,57 @@
+<%- include('header.ejs', {title:"장바구니"})%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/stylesheets/cart.css">
+</head>
+<body>
+<!-- ❶ 전체 컨테이너: body를 flex column 컨테이너로 지정 -->
+<div class="page-container">
+    <!-- ❷ 헤더 (Include) -->
+    <%- include('header.ejs', { title: "장바구니" }) %>
+
+    <!-- ❸ 메인 컨텐츠: 화면에서 남는 공간을 모두 차지 -->
+    <main class="content-wrap">
+        <h2>🛒 <%= user.name %>님의 장바구니</h2>
+
+        <% if (cartItems.length === 0) { %>
+            <p>장바구니가 비어 있습니다.</p>
+        <% } else { %>
+            <ul class="cart-list">
+                <% cartItems.forEach(item => { %>
+                    <li class="cart-item">
+              <span class="item-info">
+                <%= item.emoji %> <%= item.name %> – ₩<%= item.price.toLocaleString() %> ×
+              </span>
+                        <div class="item-actions">
+                            <form action="/cart/update" method="POST" class="qty-form">
+                                <input type="hidden" name="productId" value="<%= item.id %>">
+                                <button type="submit" name="action" value="decrease" class="qty-btn">➖</button>
+                                <span class="qty-number"><%= item.quantity %></span>
+                                <button type="submit" name="action" value="increase" class="qty-btn">➕</button>
+                            </form>
+                            <form action="/cart/delete" method="POST" class="del-form">
+                                <input type="hidden" name="productId" value="<%= item.id %>">
+                                <button type="submit" class="delete-button">🗑 삭제</button>
+                            </form>
+                        </div>
+                    </li>
+                <% }) %>
+            </ul>
+        <% } %>
+
+        <div class="cart-footer-links">
+            <a href="/products" class="back-link">← 상품 계속 보기</a>
+        </div>
+
+        <form action="/order/confirm" method="POST" class="order-btn-wrapper">
+            <button type="submit" class="order-button">✅ 주문하기</button>
+        </form>
+    </main>
+
+    <!-- ❹ 푸터 (Include) -->
+    <%- include('footer.ejs') %>
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<%- include('header.ejs', {title: '전체 상품 목록'}) %>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/stylesheets/products_all.css">
+
+</head>
+<body>
+<section>
+    <h1>🧾 전체 상품 목록</h1>
+    <p><a href="/products" class="back-link">오늘의 추천 보러가기</a></p>
+</section>
+
+<main>
+    <div class="product-grid" id="productGrid">
+        <% products.forEach((p, idx) => { %>
+            <div class="product-card" style="display: <%= idx < 4 ? 'block' : 'none' %>;">
+                <img src="/images/<%= p.image || 'default.jpg' %>" alt="<%= p.name %>">
+                <h3><%= p.emoji %> <%= p.name %>
+                    <% if (p.is_featured === 1) { %>
+                        <span style="color: #facc15; font-size: 0.9em;"><br>⭐ 추천</span>
+                    <% } %>
+                </h3>
+                <p><%= p.description %></p>
+                <strong>₩<%= p.price.toLocaleString() %></strong>
+                <form action="/cart/add" method="POST">
+                    <input type="hidden" name="productId" value="<%= p.id %>">
+                    <button type="submit" class="cart-button">🛒 장바구니 담기</button>
+                </form>
+            </div>
+        <% }) %>
+    </div>
+
+    <button class="load-more-btn" id="loadMoreBtn">더보기</button>
+</main>
+
+<%- include('footer.ejs') %>
+</body>
+<script src="/javascripts/products.js"></script>
+</html>
