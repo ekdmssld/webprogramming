@@ -31,7 +31,21 @@
     const isAdmin = user && user.username === 'admin';
     const isAnon = post.author === '익명';
     %>
-
+    <!-- 답글 섹션 -->
+    <% if (replies && replies.length > 0) { %>
+        <section class="replies-section">
+            <h4>💬 답글 <span>(<%= replies.length %>)</span></h4>
+            <% replies.forEach(reply => { %>
+                <div class="reply-card">
+                    <div class="reply-meta">
+                        <span class="reply-author"><%= reply.author %></span>
+                        <span class="reply-date"><%= reply.created_at %></span>
+                    </div>
+                    <div class="reply-content"><%= reply.content %></div>
+                </div>
+            <% }) %>
+        </section>
+    <% } %>
     <div class="actions">
         <a href="/board/reply/<%= post.id %>">[답글]</a>
         <% if (isAuthor) { %>

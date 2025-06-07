@@ -105,7 +105,26 @@ router.get('/view/:id', (req, res) => {
         if (err || !post) return res.send('글 없음');
 
         db.all('SELECT * FROM files WHERE post_id = ?', [postId], (ferr, files) => {
-            res.render('detail', { post, files:[] });
+
+            // (3) 답글(자식 글) 조회
+            db.all(
+                'SELECT * FROM posts WHERE parent_id = ? ORDER BY created_at ASC',
+                [postId],
+                (rerr, replies) => {
+                    if (rerr) {
+                        console.error('답글 조회 오류:', rerr.message);
+                        replies = [];
+                    }
+
+                    // (4) 렌더링: post, files, replies, user 전달
+                    res.render('detail', {
+                        post,
+                        files,
+                        replies,
+                        user: req.session.user
+                    });
+                }
+            );
         });
     });
 });

@@ -138,3 +138,40 @@ main.detail-container {
         gap: 8px;
     }
 }
+.replies-section {
+    margin-top: 40px;
+}
+
+.replies-section h4 {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    color: #111827;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 8px;
+}
+
+.reply-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.reply-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 8px;
+}
+
+.reply-author {
+    font-weight: 600;
+    color: #111827;
+}
+
+.reply-content {
+    line-height: 1.6;
+    color: #333;
+}
