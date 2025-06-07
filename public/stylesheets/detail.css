@@ -1,0 +1,138 @@
+/* detail.css */
+
+/* ──────────────────────────────────────────────────────────────────────────── */
+/* 1) 전체 레이아웃 및 본문 컨테이너                                            */
+/* ──────────────────────────────────────────────────────────────────────────── */
+body {
+    background: #181a20;
+    color: #e5e7eb;
+    font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* 헤더 포함 시, 본문이 헤더 밑에서 시작되도록 여백 추가 (헤더 높이에 맞춰 변경) */
+main.content-wrapper {
+    max-width: 800px;
+    margin: 80px auto 60px auto;    /* 상단 헤더 60px + 여유, 하단 푸터 60px + 여유 */
+    background-color: #ffffff;       /* 본문 흰 배경 */
+    padding: 30px 40px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────── */
+/* 2) 타이포그래피                                                             */
+/* ──────────────────────────────────────────────────────────────────────────── */
+h2 {
+    color: #f3f4f6;
+    margin-top: 32px;
+    text-align: center;
+    font-weight: 700;
+}
+
+/* 본문 단락 */
+p {
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────── */
+/* 3) 첨부파일 목록                                                            */
+/* ──────────────────────────────────────────────────────────────────────────── */
+h4 {
+    margin-top: 30px;
+    margin-bottom: 12px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #111827;
+}
+
+ul.file-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 24px;
+}
+
+ul.file-list li {
+    margin-bottom: 8px;
+}
+
+ul.file-list li a {
+    color: #2563eb;                  /* 파란색 링크 */
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+ul.file-list li a:hover {
+    color: #1e40af;                  /* 진한 파란색으로 호버 효과 */
+}
+
+/* ──────────────────────────────────────────────────────────────────────────── */
+/* 4) 동작 버튼 (답글, 수정, 삭제, 목록)                                        */
+/* ──────────────────────────────────────────────────────────────────────────── */
+.actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.actions a,
+.actions span.disabled {
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: #111827;                  /* 진한 네이비 텍스트 */
+    border: 1px solid #d1d5db;       /* 연한 회색 테두리 */
+    padding: 6px 14px;
+    border-radius: 6px;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.actions a:hover {
+    background-color: #f3f4f6;        /* 연한 회색 배경 (hover) */
+    border-color: #9ca3af;            /* 중간 회색 테두리 (hover) */
+    color: #111827;
+}
+
+/* 수정/삭제 버튼 비활성화 상태(클릭 불가) */
+.actions span.disabled {
+    color: #9ca3af;                  /* 연한 회색 텍스트 */
+    border-color: #e5e7eb;           /* 매우 연한 회색 테두리 */
+    background-color: #f9fafb;       /* 거의 흰색 배경 */
+    cursor: not-allowed;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────── */
+/* 5) 작성자 및 작성일                                                         */
+/* ──────────────────────────────────────────────────────────────────────────── */
+.meta-info {
+    font-size: 0.9rem;
+    color: #6b7280;                  /* 중간 회색 텍스트 */
+    margin-bottom: 20px;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────── */
+/* 6) 반응형 레이아웃                                                           */
+/* ──────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    main.content-wrapper {
+        margin: 60px 16px 60px 16px;
+        padding: 24px;
+    }
+
+    h2 {
+        font-size: 1.6rem;
+    }
+
+    .actions {
+        gap: 10px;
+    }
+
+    .actions a,
+    .actions span.disabled {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+}

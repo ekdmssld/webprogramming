@@ -146,26 +146,80 @@ router.post('/create', (req, res) => {
 
 // 수정 폼
 router.get('/edit/:id', (req, res) => {
-    db.get('SELECT * FROM posts WHERE id = ?', [req.params.id], (err, post) => {
-        if (err || !post) return res.send('글 없음');
-        res.render('edit',{ post });
-        //res.render('post', { post });
+    const postId = req.params.id;
+
+    // ① 먼저 해당 게시물을 조회
+    db.get('SELECT * FROM posts WHERE id = ?', [postId], (err, post) => {
+        if (err || !post) {
+            return res.send('글 없음');
+        }
+
+        // ② 이 게시물에 연결된 files 테이블의 레코드를 모두 가져오기
+        db.all('SELECT * FROM files WHERE post_id = ?', [postId], (fileErr, files) => {
+            if (fileErr) {
+                console.error('첨부파일 조회 오류:', fileErr.message);
+                // 파일 조회에 실패해도 최소 post 객체는 보여주기
+                files = [];
+            }
+            // ③ edit.ejs에 post와 files를 같이 전달
+            res.render('edit', { post, files });
+        });
     });
 });
 
 // 수정 처리
-router.post('/edit/:id', (req, res) => {
+router.post('/edit/:id', upload.single('attachment'), (req, res) => {
+    const postId = req.params.id;
     const { title, content } = req.body;
-    //const postId = req.params.id;
+    const deleteFileIds = req.body.deleteFileIds; // 체크된 파일 ID들 (string 또는 배열)
+
+    // (1) 게시글 내용 수정
     db.run(
         'UPDATE posts SET title = ?, content = ? WHERE id = ?',
-        [title, content, req.params.id],
+        [title, content, postId],
         (err) => {
             if (err) return res.send('수정 실패');
-            res.redirect('/board/view/' + req.params.id);
+
+            // (2) 체크된 파일이 있으면 DB에서 삭제 & 파일시스템에서도 제거
+            if (deleteFileIds) {
+                // deleteFileIds가 단일 값이라면 문자열, 여러 개면 배열이 됨
+                const idsToDelete = Array.isArray(deleteFileIds) ? deleteFileIds : [deleteFileIds];
+                idsToDelete.forEach(idStr => {
+                    const fileId = parseInt(idStr, 10);
+                    // DB에서 파일 정보 얻어오기
+                    db.get('SELECT filepath FROM files WHERE id = ?', [fileId], (Ferr, row) => {
+                        if (row) {
+                            // 실제 파일 삭제
+                            fs.unlink(row.filepath, (fsErr) => {
+                                if (fsErr) console.error('파일 삭제 오류:', fsErr);
+                            });
+                            // DB 레코드 삭제
+                            db.run('DELETE FROM files WHERE id = ?', [fileId], (DelErr) => {
+                                if (DelErr) console.error('files 테이블 삭제 오류:', DelErr);
+                            });
+                        }
+                    });
+                });
+            }
+
+            // (3) 새로 첨부된 파일이 있으면 파일 저장 & DB에 삽입
+            if (req.file) {
+                const { filename, path: filepath } = req.file;
+                db.run(
+                    'INSERT INTO files (post_id, filename, filepath) VALUES (?, ?, ?)',
+                    [postId, filename, filepath],
+                    (InsErr) => {
+                        if (InsErr) console.error('새 파일 저장 오류:', InsErr);
+                        return res.redirect('/board/view/' + postId);
+                    }
+                );
+            } else {
+                return res.redirect('/board/view/' + postId);
+            }
         }
     );
 });
+
 
 // 삭제
 // router.get('/delete/:id', (req, res) => {
