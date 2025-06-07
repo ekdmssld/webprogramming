@@ -31,5 +31,28 @@ router.get('/all', (req, res) => {
         });
     });
 });
+// routes/products.js
+router.get('/:id', (req, res) => {
+    const id = req.params.id;
+    db.get('SELECT * FROM products WHERE id = ?', [id], (err, product) => {
+        if (err || !product) return res.status(404).send('상품을 찾을 수 없습니다.');
+        res.render('product_detail', {
+            product,
+            user: req.session.user
+        });
+    });
+});
+router.get('/all/:id', (req, res) => {
+    const id = req.params.id;
+    db.get('SELECT * FROM products WHERE id = ?', [id], (err, product) => {
+        if (err || !product) return res.status(404).send('상품을 찾을 수 없습니다.');
+        res.render('product_detail', {
+            product,
+            user: req.session.user
+        });
+    });
+});
+
+
 
 module.exports = router;

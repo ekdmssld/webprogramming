@@ -1,0 +1,28 @@
+<!-- views/product_detail.ejs -->
+<!DOCTYPE html>
+<html lang="ko">
+<%- include('header.ejs', {title: product.name}) %>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/stylesheets/products.css">
+</head>
+<body>
+<section class="product-detail">
+    <div class="product-detail-img">
+        <img src="/images/<%= product.image || 'default.jpg' %>" alt="<%= product.name %>">
+    </div>
+    <div class="product-detail-info">
+        <h2><%= product.emoji %> <%= product.name %></h2>
+        <p><%= product.description %></p>
+        <strong>₩<%= product.price.toLocaleString() %></strong>
+        <form action="/cart/add" method="POST">
+            <input type="hidden" name="productId" value="<%= product.id %>">
+            <button type="submit" class="cart-button">🛒 장바구니 담기</button>
+        </form>
+        <br>
+        <a href="/products">← 목록으로 돌아가기</a>
+    </div>
+</section>
+</body>
+<%- include('footer.ejs') %>
+</html>

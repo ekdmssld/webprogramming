@@ -1,138 +1,149 @@
-/* detail.css */
+/* public/stylesheets/detail.css */
 
-/* ──────────────────────────────────────────────────────────────────────────── */
-/* 1) 전체 레이아웃 및 본문 컨테이너                                            */
-/* ──────────────────────────────────────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────────────────────── */
+/* 1) 전체 배경 & 기본 텍스트                                                */
+/* ────────────────────────────────────────────────────────────────────────── */
 body {
-    background: #181a20;
-    color: #e5e7eb;
-    font-family: 'Noto Sans KR', 'Apple SD Gothic Neo', Arial, sans-serif;
+    background: #f3f4f6;           /* 연회색 전체 배경 */
     margin: 0;
     padding: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
 }
 
-/* 헤더 포함 시, 본문이 헤더 밑에서 시작되도록 여백 추가 (헤더 높이에 맞춰 변경) */
-main.content-wrapper {
-    max-width: 800px;
-    margin: 80px auto 60px auto;    /* 상단 헤더 60px + 여유, 하단 푸터 60px + 여유 */
-    background-color: #ffffff;       /* 본문 흰 배경 */
-    padding: 30px 40px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+/* ────────────────────────────────────────────────────────────────────────── */
+/* 2) 본문 카드 래퍼                                                         */
+/* ────────────────────────────────────────────────────────────────────────── */
+main.detail-container {
+    background: #f9fafb;        /* 조금 더 연한 회색 계열 */
+    min-height: 300px;
+    max-width: 900px;
+    margin: 60px auto 80px auto;
+    padding: 24px 32px;
     border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
-
-/* ──────────────────────────────────────────────────────────────────────────── */
-/* 2) 타이포그래피                                                             */
-/* ──────────────────────────────────────────────────────────────────────────── */
-h2 {
-    color: #f3f4f6;
-    margin-top: 32px;
-    text-align: center;
-    font-weight: 700;
-}
-
-/* 본문 단락 */
-p {
+.content-body {
+    background: #ffffff;
+    min-height: 150px;
+    padding: 20px;
+    border-radius: 4px;
     line-height: 1.6;
-    margin-bottom: 16px;
+    margin-bottom: 24px;
+}
+/* ────────────────────────────────────────────────────────────────────────── */
+/* 3) 제목 블록                                                              */
+/* ────────────────────────────────────────────────────────────────────────── */
+.title-block {
+    background: #e5e7eb;
+    padding: 16px 20px;
+    border-radius: 6px;
+    margin-bottom: 24px;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #111827;                /* 포인트 색 */
 }
 
-/* ──────────────────────────────────────────────────────────────────────────── */
-/* 3) 첨부파일 목록                                                            */
-/* ──────────────────────────────────────────────────────────────────────────── */
-h4 {
-    margin-top: 30px;
-    margin-bottom: 12px;
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: #111827;
+/* ────────────────────────────────────────────────────────────────────────── */
+/* 4) 메타 정보                                                             */
+/* ────────────────────────────────────────────────────────────────────────── */
+.meta-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 20px;
 }
 
-ul.file-list {
-    list-style: none;
-    padding-left: 0;
+/* ────────────────────────────────────────────────────────────────────────── */
+/* 5) 본문 내용                                                             */
+/* ────────────────────────────────────────────────────────────────────────── */
+.content-body {
+    background: #f9fafb;
+    padding: 20px;
+    border-radius: 4px;
+    line-height: 1.6;
     margin-bottom: 24px;
 }
 
-ul.file-list li {
-    margin-bottom: 8px;
+/* ────────────────────────────────────────────────────────────────────────── */
+/* 6) 답글 목록                                                             */
+/* ────────────────────────────────────────────────────────────────────────── */
+.reply-list {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 32px;
 }
 
-ul.file-list li a {
-    color: #2563eb;                  /* 파란색 링크 */
-    text-decoration: none;
-    transition: color 0.2s;
+.reply-list h4 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+    color: #111827;
 }
 
-ul.file-list li a:hover {
-    color: #1e40af;                  /* 진한 파란색으로 호버 효과 */
+.reply-list .reply-item {
+    margin-bottom: 12px;
+    padding-left: 8px;
+    border-left: 3px solid #111827;
 }
 
-/* ──────────────────────────────────────────────────────────────────────────── */
-/* 4) 동작 버튼 (답글, 수정, 삭제, 목록)                                        */
-/* ──────────────────────────────────────────────────────────────────────────── */
+.reply-list .reply-item:last-child {
+    margin-bottom: 0;
+}
+
+/* ────────────────────────────────────────────────────────────────────────── */
+/* 7) 액션 버튼                                                             */
+/* ────────────────────────────────────────────────────────────────────────── */
 .actions {
-    margin-top: 30px;
     display: flex;
-    gap: 16px;
     flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
 }
 
 .actions a,
 .actions span.disabled {
+    text-decoration: none;
     font-size: 0.95rem;
     font-weight: 500;
-    text-decoration: none;
-    color: #111827;                  /* 진한 네이비 텍스트 */
-    border: 1px solid #d1d5db;       /* 연한 회색 테두리 */
-    padding: 6px 14px;
+    padding: 8px 16px;
     border-radius: 6px;
-    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+    transition: background 0.2s, color 0.2s;
+}
+
+/* 활성 버튼 */
+.actions a {
+    background: #111827;
+    color: #fff;
 }
 
 .actions a:hover {
-    background-color: #f3f4f6;        /* 연한 회색 배경 (hover) */
-    border-color: #9ca3af;            /* 중간 회색 테두리 (hover) */
-    color: #111827;
+    background: #374151;
 }
 
-/* 수정/삭제 버튼 비활성화 상태(클릭 불가) */
+/* 비활성(권한 없음) */
 .actions span.disabled {
-    color: #9ca3af;                  /* 연한 회색 텍스트 */
-    border-color: #e5e7eb;           /* 매우 연한 회색 테두리 */
-    background-color: #f9fafb;       /* 거의 흰색 배경 */
+    background: #e5e7eb;
+    color: #9ca3af;
     cursor: not-allowed;
 }
 
-/* ──────────────────────────────────────────────────────────────────────────── */
-/* 5) 작성자 및 작성일                                                         */
-/* ──────────────────────────────────────────────────────────────────────────── */
-.meta-info {
-    font-size: 0.9rem;
-    color: #6b7280;                  /* 중간 회색 텍스트 */
-    margin-bottom: 20px;
-}
-
-/* ──────────────────────────────────────────────────────────────────────────── */
-/* 6) 반응형 레이아웃                                                           */
-/* ──────────────────────────────────────────────────────────────────────────── */
+/* ────────────────────────────────────────────────────────────────────────── */
+/* 8) 반응형                                                                */
+/* ────────────────────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-    main.content-wrapper {
-        margin: 60px 16px 60px 16px;
-        padding: 24px;
+    main.detail-container {
+        margin: 40px 16px 60px 16px;
+        padding: 20px;
     }
-
-    h2 {
-        font-size: 1.6rem;
+    .meta-info {
+        flex-direction: column;
+        gap: 8px;
     }
-
     .actions {
-        gap: 10px;
-    }
-
-    .actions a,
-    .actions span.disabled {
-        padding: 6px 10px;
-        font-size: 0.9rem;
+        gap: 8px;
     }
 }
