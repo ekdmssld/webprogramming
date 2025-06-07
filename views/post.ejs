@@ -16,22 +16,25 @@
     <title><%= post ? '글 수정' : (parentId ? '답글 작성' : '새 글 작성') %></title>
 </head>
 <body>
+<main class="post-wrapper">
+    <h2><%= post ? '글 수정' : (parentId ? '답글 작성' : '새 글 작성') %></h2>
 
-<h2><%= post ? '글 수정' : (parentId ? '답글 작성' : '새 글 작성') %></h2>
+    <form action="<%= post ? '/board/edit/' + post.id : '/board/new' %>" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="parent_id" value="<%= post ? post.parent_id : parentId %>">
 
-<form action="<%= post ? '/board/edit/' + post.id : '/board/new' %>" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="parent_id" value="<%= post ? post.parent_id : parentId %>">
+        <label for="title">제목</label><br>
+        <input type="text" id="title" name="title" placeholder="제목" value="<%= post?.title || '' %>" required><br>
 
-    <label for="title">제목</label><br>
-    <input type="text" id="title" name="title" placeholder="제목" value="<%= post?.title || '' %>" required><br>
+        <label for="content">내용</label><br>
+        <textarea id="content" name="content" placeholder="내용" rows="8"><%= post?.content || '' %></textarea><br>
+        <input type="file" name="attachment">
+        <button type="submit">저장</button>
+    </form>
+    <p><a href="/board" class="back-link">← 게시판으로 돌아가기</a></p>
+</main>
 
-    <label for="content">내용</label><br>
-    <textarea id="content" name="content" placeholder="내용" rows="8"><%= post?.content || '' %></textarea><br>
-    <input type="file" name="attachment">
-    <button type="submit">저장</button>
-</form>
 
-<p><a href="/board">← 게시판으로 돌아가기</a></p>
+
 
 </body>
 <%- include("footer.ejs")%>

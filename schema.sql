@@ -38,3 +38,11 @@ CREATE TABLE cart_items (
                             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                             PRIMARY KEY(user_id, product_id)
 );
+CREATE TABLE IF NOT EXISTS wishlist_items (
+                                              user_id    INTEGER NOT NULL,
+                                              product_id INTEGER NOT NULL,
+                                              created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                                              PRIMARY KEY (user_id, product_id),
+                                              FOREIGN KEY (user_id)    REFERENCES users(id),
+                                              FOREIGN KEY (product_id) REFERENCES products(id)
+);

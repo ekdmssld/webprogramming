@@ -40,6 +40,40 @@
                 <% }) %>
             </ul>
         <% } %>
+        <hr>
+        <!-- ➤ 위시리스트 섹션 -->
+        <% if (wishlist && wishlist.length > 0) { %>
+            <section class="wishlist-section">
+                <h3>💖 내 위시리스트</h3>
+                <div class="wishlist-grid">
+                    <% wishlist.forEach(item => { %>
+                        <div class="wishlist-card" data-id="<%= item.id %>">
+                            <img
+                                    src="/images/<%= item.image || 'default.jpg' %>"
+                                    alt="<%= item.name %>"
+                                    class="wishlist-thumb"
+                            />
+                            <div class="wishlist-info">
+                                <h4><%= item.emoji %> <%= item.name %></h4>
+                                <p class="price">₩<%= item.price.toLocaleString() %></p>
+                            </div>
+                            <div class="wishlist-actions">
+                                <form action="/cart/add" method="POST">
+                                    <input type="hidden" name="productId" value="<%= item.id %>" />
+                                    <button type="submit" class="btn btn-cart">🛒 장바구니</button>
+                                </form>
+                                <button type="button" class="btn btn-remove" data-id="<%= item.id %>">
+                                    🗑
+                                </button>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            </section>
+        <% } else { %>
+            <p class="empty-wishlist">아직 위시리스트가 비어 있습니다.</p>
+        <% } %>
+
 
         <div class="cart-footer-links">
             <a href="/products" class="back-link">← 상품 계속 보기</a>
@@ -53,26 +87,6 @@
     <!-- ❹ 푸터 (Include) -->
     <%- include('footer.ejs') %>
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // 위시리스트 상태 로드
-        const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-        document.querySelectorAll('.wishlist-button').forEach(btn => {
-            const pid = btn.dataset.productId;
-            if (wishlist.includes(pid)) btn.classList.add('active');
-            btn.addEventListener('click', function() {
-                let list = JSON.parse(localStorage.getItem('wishlist') || '[]');
-                if (list.includes(pid)) {
-                    list = list.filter(id => id !== pid);
-                    btn.classList.remove('active');
-                } else {
-                    list.push(pid);
-                    btn.classList.add('active');
-                }
-                localStorage.setItem('wishlist', JSON.stringify(list));
-            });
-        });
-    });
-</script>
+<script src="/javascripts/wishlist.js"></script>
 </body>
 </html>

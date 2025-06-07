@@ -1,10 +1,10 @@
 /* public/stylesheets/detail.css */
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* 1) 전체 배경 & 기본 텍스트                                                */
+/* 1) 전역 스타일 & 배경                                                     */
 /* ────────────────────────────────────────────────────────────────────────── */
 body {
-    background: #f3f4f6;           /* 연회색 전체 배경 */
+    background: #f3f4f6;
     margin: 0;
     padding: 0;
     font-family: 'Noto Sans KR', sans-serif;
@@ -12,36 +12,28 @@ body {
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* 2) 본문 카드 래퍼                                                         */
+/* 2) 메인 컨테이너                                                         */
 /* ────────────────────────────────────────────────────────────────────────── */
 main.detail-container {
-    background: #f9fafb;        /* 조금 더 연한 회색 계열 */
-    min-height: 300px;
-    max-width: 900px;
-    margin: 60px auto 80px auto;
-    padding: 24px 32px;
+    background: #ffffff;
+    max-width: 800px;
+    margin: 80px auto 60px auto;
+    padding: 32px;
     border-radius: 8px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.06);
 }
-.content-body {
-    background: #ffffff;
-    min-height: 150px;
-    padding: 20px;
-    border-radius: 4px;
-    line-height: 1.6;
-    margin-bottom: 24px;
-}
+
 /* ────────────────────────────────────────────────────────────────────────── */
 /* 3) 제목 블록                                                              */
 /* ────────────────────────────────────────────────────────────────────────── */
 .title-block {
     background: #e5e7eb;
-    padding: 16px 20px;
+    padding: 12px 16px;
     border-radius: 6px;
     margin-bottom: 24px;
     font-size: 1.4rem;
     font-weight: 700;
-    color: #111827;                /* 포인트 색 */
+    color: #111827;
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
@@ -50,10 +42,10 @@ main.detail-container {
 .meta-info {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 16px;
     font-size: 0.9rem;
     color: #6b7280;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
@@ -63,35 +55,35 @@ main.detail-container {
     background: #f9fafb;
     padding: 20px;
     border-radius: 4px;
-    line-height: 1.6;
+    line-height: 1.7;
     margin-bottom: 24px;
+    min-height: 150px;
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
-/* 6) 답글 목록                                                             */
+/* 6) 첨부파일 목록                                                         */
 /* ────────────────────────────────────────────────────────────────────────── */
 .reply-list {
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 4px;
-    padding: 16px;
     margin-bottom: 32px;
 }
-
 .reply-list h4 {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 12px;
     color: #111827;
 }
-
-.reply-list .reply-item {
-    margin-bottom: 12px;
-    padding-left: 8px;
-    border-left: 3px solid #111827;
+.reply-item {
+    padding: 8px 12px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    margin-bottom: 8px;
 }
-
-.reply-list .reply-item:last-child {
-    margin-bottom: 0;
+.reply-item a {
+    color: #2563eb;
+    text-decoration: none;
+}
+.reply-item a:hover {
+    text-decoration: underline;
 }
 
 /* ────────────────────────────────────────────────────────────────────────── */
@@ -102,19 +94,19 @@ main.detail-container {
     flex-wrap: wrap;
     gap: 12px;
     justify-content: center;
+    margin-top: 16px;
 }
 
 .actions a,
 .actions span.disabled {
-    text-decoration: none;
-    font-size: 0.95rem;
-    font-weight: 500;
     padding: 8px 16px;
     border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
     transition: background 0.2s, color 0.2s;
 }
 
-/* 활성 버튼 */
 .actions a {
     background: #111827;
     color: #fff;
@@ -124,7 +116,6 @@ main.detail-container {
     background: #374151;
 }
 
-/* 비활성(권한 없음) */
 .actions span.disabled {
     background: #e5e7eb;
     color: #9ca3af;
@@ -134,10 +125,10 @@ main.detail-container {
 /* ────────────────────────────────────────────────────────────────────────── */
 /* 8) 반응형                                                                */
 /* ────────────────────────────────────────────────────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     main.detail-container {
-        margin: 40px 16px 60px 16px;
-        padding: 20px;
+        margin: 40px 16px;
+        padding: 24px 16px;
     }
     .meta-info {
         flex-direction: column;

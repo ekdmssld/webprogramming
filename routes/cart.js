@@ -27,20 +27,44 @@ router.post("/add", (req, res) => {
 // 장바구니 목록 조회
 router.get('/', (req, res) => {
     const user = req.session.user;
-if (!user) return res.render('login_required', {
-    message: '장바구니를 확인하려면 로그인이 필요합니다.',
-    redirectUrl: '/auth'
-});
+    if (!user) {
+        return res.render('login_required', {
+            message: '장바구니를 확인하려면 로그인이 필요합니다.',
+            redirectUrl: '/auth'
+        });
+    }
 
-    const query = `
-    SELECT p.id, p.name, p.price, p.emoji, p.image, c.quantity
-    FROM cart_items c
-    JOIN products p ON c.product_id = p.id
-    WHERE c.user_id = ?`;
+    // ── 1) cart_items 조회 ───────────────────────────────────────────────
+    const cartQuery = `
+        SELECT p.id, p.name, p.price, p.emoji, p.image, c.quantity
+        FROM cart_items c
+                 JOIN products p ON c.product_id = p.id
+        WHERE c.user_id = ?
+    `;
+    db.all(cartQuery, [user.id], (cartErr, cartItems) => {
+        if (cartErr) return res.status(500).send('장바구니 조회 실패');
 
-    db.all(query, [user.id], (err, rows) => {
-        if (err) return res.status(500).send('장바구니 조회 실패');
-        res.render('cart', { cartItems: rows, user });
+        // ── 2) wishlist_items 조회 ─────────────────────────────────────────
+        const wishQuery = `
+      SELECT p.id, p.name, p.price, p.emoji, p.image
+      FROM wishlist_items w
+      JOIN products p ON w.product_id = p.id
+      WHERE w.user_id = ?
+      ORDER BY w.created_at DESC
+    `;
+        db.all(wishQuery, [user.id], (wishErr, wishlist) => {
+            if (wishErr) {
+                console.error('위시리스트 조회 오류:', wishErr.message);
+                wishlist = [];  // 오류 시 빈 배열
+            }
+
+            // ── 3) cart.ejs에 cartItems, user, wishlist 세 가지를 전달 ────────
+            res.render('cart', {
+                cartItems,
+                user,
+                wishlist,
+            });
+        });
     });
 });
 
