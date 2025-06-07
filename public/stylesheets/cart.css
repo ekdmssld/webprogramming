@@ -205,12 +205,16 @@
 .btn-cart {
     background: #10b981;
     color: #fff;
+    width: max-content;
+    font-size: 1.1rem;
+    padding: 12px 28px;
+    border-radius: 8px;
 }
 .btn-cart:hover {
     background: #059669;
 }
 .btn-remove {
-    background: #ef4444;
+    background: rgba(239, 68, 68, 0.71);
     color: #fff;
 }
 .btn-remove:hover {
