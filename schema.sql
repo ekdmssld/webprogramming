@@ -46,3 +46,11 @@ CREATE TABLE IF NOT EXISTS wishlist_items (
                                               FOREIGN KEY (user_id)    REFERENCES users(id),
                                               FOREIGN KEY (product_id) REFERENCES products(id)
 );
+CREATE TABLE IF NOT EXISTS files (
+                                     id         INTEGER PRIMARY KEY AUTOINCREMENT,
+                                     post_id    INTEGER NOT NULL,
+                                     filename   TEXT    NOT NULL,
+                                     filepath   TEXT    NOT NULL,
+                                     uploaded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                                     FOREIGN KEY(post_id) REFERENCES posts(id) ON DELETE CASCADE
+);

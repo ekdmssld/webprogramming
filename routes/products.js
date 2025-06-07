@@ -3,7 +3,6 @@ const router = express.Router();
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./db/database.sqlite');
 
-// routes/products.js
 router.get('/', (req, res) => {
     const user = req.session.user;
 
@@ -83,28 +82,37 @@ router.get('/all', (req, res) => {
     });
 });
 
-router.get('/:id', (req, res) => {
-    const id = req.params.id;
+// 상품 상세 (추천 상품 / 전체 목록 공통)
+function renderProductDetail(req, res) {
+    const id   = req.params.id;
+    const user = req.session.user;
+
+    // (1) 상품 불러오기
     db.get('SELECT * FROM products WHERE id = ?', [id], (err, product) => {
-        if (err || !product) return res.status(404).send('상품을 찾을 수 없습니다.');
-        res.render('product_detail', {
-            product,
-            user: req.session.user,
-            isWishlisted
-        });
+        if (err || !product) {
+            return res.status(404).send('상품을 찾을 수 없습니다.');
+        }
+
+        // (2) 로그인한 경우에만 위시리스트 여부 확인
+        if (user) {
+            db.get(
+                'SELECT 1 FROM wishlist_items WHERE user_id = ? AND product_id = ?',
+                [user.id, id],
+                (wishErr, row) => {
+                    if (wishErr) console.error('위시리스트 조회 오류:', wishErr);
+                    const isWishlisted = !!row;
+                    res.render('product_detail', { product, user, isWishlisted });
+                }
+            );
+        } else {
+            // 비로그인 상태면 무조건 false
+            res.render('product_detail', { product, user: null, isWishlisted: false });
+        }
     });
-});
-router.get('/all/:id', (req, res) => {
-    const id = req.params.id;
-    db.get('SELECT * FROM products WHERE id = ?', [id], (err, product) => {
-        if (err || !product) return res.status(404).send('상품을 찾을 수 없습니다.');
-        res.render('product_detail', {
-            product,
-            user: req.session.user,
-            isWishlisted
-        });
-    });
-});
+}
+
+router.get('/:id',  renderProductDetail);
+router.get('/all/:id', renderProductDetail);
 
 
 

@@ -157,3 +157,8 @@ main li .post-actions a:hover {
         font-size: 0.98rem;
     }
 }
+p{
+    text-align: right;
+    margin-right: 15px;
+  font-weight: bold;
+}
