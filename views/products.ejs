@@ -42,11 +42,19 @@
                 <form action="/cart/add" method="POST">
                     <input type="hidden" name="productId" value="<%= product.id %>">
                     <button type="submit" class="cart-button">🛒 장바구니 담기</button>
+                    <button type="button" class="wishlist-button" data-product-id="<%= product.id %>">
+                        <span class="wishlist-heart" style="display:inline-flex;align-items:center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
+                                <path class="heart-shape" d="M10 18s-6.5-4.7-8.3-8.1C-0.2 6.2 2.1 2.5 6 2.5c1.7 0 3.2 1 4 2.5 0.8-1.5 2.3-2.5 4-2.5 3.9 0 6.2 3.7 4.3 7.4C16.5 13.3 10 18 10 18z" stroke="#e11d48" stroke-width="1.5" fill="none"/>
+                            </svg>
+                        </span>
+                    </button>
                 </form>
             </div>
         <% }) %>
     </div>
 </section>
 </body>
+<script src="/javascripts/wishlist.js"></script>
 <%-include('footer.ejs') %>
 </html>
